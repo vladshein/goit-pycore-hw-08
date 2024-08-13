@@ -165,7 +165,7 @@ def main():
         
         elif command == 'birthdays':
             print("\n=== Birthdays start ===")
-            print(birthdays(args, book))
+            print(f"Upcoming birthdays are:\n{birthdays(args, book)}")
             print("=== Birthdays end ===\n")
 
         else:

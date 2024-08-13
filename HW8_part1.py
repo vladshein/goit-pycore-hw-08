@@ -60,10 +60,12 @@ class Record:
         return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}, birthday: {self.birthday}"
 
     def add_birthday(self, birthday):
-        self.birthday = birthday
+        if birthday:
+            self.birthday = birthday
 
     def add_phone(self, phone):
-        self.phones.append(Phone(phone))
+        if phone:
+            self.phones.append(Phone(phone))
 
     def remove_phone(self, phone):
         for i in range(len(self.phones)):
@@ -94,10 +96,13 @@ class Record:
 class AddressBook(UserDict):
     # реалізація класу
     def add_record(self, record):
-        self.data[record.name] = record
+        if record:
+            self.data[record.name] = record
 
     #find record by name
     def find(self, name):
+        if not name:
+            return f"Input is incorrect. Correct entered name!"
         for key in self.data.keys():
             if key.value == name:
                 return self.data[key]
@@ -116,13 +121,16 @@ class AddressBook(UserDict):
         print(f"Today is {current_date}")
 
         for rec_name, record in self.data.items():
-            birthday_this_year = record.birthday.value.replace(year=2024)
+            if record.birthday:
+                birthday_this_year = record.birthday.value.replace(year=2024)
+            else:
+                continue
+
             if birthday_this_year < current_date:
                 print("Birtday will be in next year")
                 continue
             else:
                 delta = (birthday_this_year - current_date).days 
-                print(delta)
 
                 if delta <= 7:
                     print("Birthday is within 7 days.")
@@ -138,13 +146,11 @@ class AddressBook(UserDict):
                         print("Birthday is on a weekend. Congratulate on Monday")
                         updated_date = int(birthday_this_year.day) + 1
                         congratulation_date = birthday_this_year.replace(day=updated_date) 
-                        print(congratulation_date) 
                     #add name and congratulation data to list of dicts
                     local_dict = {}
                     local_dict[rec_name.value] = congratulation_date
                     congrats_list.append(local_dict)
 
-        print(congrats_list)
         return congrats_list
 
 def main():
